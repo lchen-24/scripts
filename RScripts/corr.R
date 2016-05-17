@@ -10,12 +10,7 @@ corr<- function(directory,threshold=0) {
     y<-x
     assign("y", y, envir=.GlobalEnv)
   }
-  z<-data.frame(id=NA, nobs=NA)[numeric(0), ]
-  for (i in id) {
-    count<-sum(complete.cases(y[[i]]))
-    temp<-data.frame(i,count)
-    colnames(temp)<-c("id","nobs")
-    z<-rbind(z,temp)
-  }
-  z
+  source("/home/lukechen/R/RScripts/complete.R")
+  id_list<-complete("specdata")
+  filter<-id_list[which(id_list$nobs>threshold)]
 }
