@@ -1,3 +1,4 @@
+#This function returns mean of pollutant from files of specified directory
 pollutantmean<- function(directory,pollutant,id=1:332) {
   #check if data already exists
   if (exists("y")) {

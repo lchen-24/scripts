@@ -1,3 +1,4 @@
+#this function gives correlation between pollutants if file has more complete cases than threshold
 corr<- function(directory,threshold=0) {
   #check if data already exists
   if (exists("y")) {

@@ -1,3 +1,4 @@
+#this function checks how many complete cases there are in files specified
 complete<- function(directory,id=1:332) {
   #check if data already exists
   if (exists("y")) {
