@@ -1,4 +1,4 @@
-#this functino solves inverse matrix or calls from cache if already available
+#this function solves inverse matrix or calls from cache if already available
 cacheSolve <- function(x, ...) {
   #get inverse of input matrix if available
   i <- x$getinverse()

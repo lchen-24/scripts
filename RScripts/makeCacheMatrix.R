@@ -1,6 +1,8 @@
 #this function creates a matrix and caches its inverse
-makeCacheMatrix <- function(x = numeric()) {
+makeCacheMatrix <- function(x = matrix()) {
+  #place holder for inverse matrix
   i <- NULL
+  #sets matrix 'x' from input argument
   set <- function(y) {
     x <<- y
     i <<- NULL
