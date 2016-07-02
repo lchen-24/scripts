@@ -1,0 +1,57 @@
+---
+title       : Developing Data Products Course Project
+subtitle    : Predicting Iris Species
+author      : Luke Chen
+job         : 
+framework   : io2012        # {io2012, html5slides, shower, dzslides, ...}
+highlighter : highlight.js  # {highlight.js, prettify, highlight}
+hitheme     : tomorrow      # 
+widgets     : []            # {mathjax, quiz, bootstrap}
+mode        : selfcontained # {standalone, draft}
+knit        : slidify::knit2slides
+---
+
+## Predicting Iris Species
+
+* Created app that predicts Iris species using petal length and width
+* Using decision tree model to fit data
+* Give most likely species and probability
+
+--- .class #id 
+
+## Model fit
+
+Model is first fitted with dataset iris
+
+```{r,echo=FALSE}
+  library(rpart)
+  library(rpart.plot)
+  fit <- rpart(Species ~ Petal.Length+Petal.Width, data = iris)
+  fit
+```
+
+--- .class #id 
+
+
+## Example
+
+For example, if petal length is 3 cm and petal width is 1cm, it outputs the splitting criteria and prediction
+
+```{r simple-plot, fig.height=3,echo=FALSE}
+  library(rpart)
+  library(rpart.plot)
+  fit <- rpart(Species ~ Petal.Length+Petal.Width, data = iris)
+  rpart.plot(fit)
+  df<-data.frame(Petal.Length=3,Petal.Width=1)
+  predict(fit,df,"class")
+  predict(fit,df)
+```
+
+--- .class #id
+
+## The End
+
+Thanks for your time. Shiny code can be found in 
+
+
+https://github.com/lukeyanchen/DevelopingDataProducts
