@@ -1,0 +1,7 @@
+name: Publish Document
+account: rpubs
+server: rpubs.com
+appId: https://api.rpubs.com/api/v1/document/193681/c2eb463732dd47769cc517d1033f4a6d
+bundleId: https://api.rpubs.com/api/v1/document/193681/c2eb463732dd47769cc517d1033f4a6d
+url: http://rpubs.com/lukeyanchen/193681
+when: 1467590502.60766
