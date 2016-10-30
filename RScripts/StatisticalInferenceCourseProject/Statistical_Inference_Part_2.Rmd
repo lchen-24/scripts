@@ -1,0 +1,117 @@
+---
+title: "Statistical Inference Course Project Part 2"
+author: "Luke Chen"
+output: pdf_document
+toc: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,fig.pos = 'H')
+```
+
+## Overview
+
+For this exercise, we are going to analyze the ToothGrowth data in the R datasets package. Primarily, we will be:
+
+1. Performing some basic exploratory data analyses
+2. Providing a basic summary of the data
+3. Using confidence intervals and/or hypothesis tests to compare tooth growth by supp and dose
+4. Stating our conclusions and the assumptions needed for our conclusions
+
+
+## 1. Perform basic exploratory data analyses
+
+
+
+From the graphs, it seems like there is a positive correlation between dosage and tooth growth but it is not evident when it comes to supplements (*Figure 1* in appendix). This is further confirmed when we break it down by supplement to remove their effects (*Figure 2*). The graphs show that higher dosage leads to more tooth growth, regardless of which supplement is used.
+
+
+## 2. Provide basic summary of data
+
+```{r}
+library(datasets)
+data("ToothGrowth")
+str(ToothGrowth)
+summary(ToothGrowth)
+```
+
+
+## 3. Use confidence intervals and/or hypothesis tests to compare tooth growth by supp and dose
+
+
+### Hypothesis Testing for Supplements
+
+$H_0$ *: Average tooth growth is not significantly different for each supplement or * $\mu_{vc} - \mu_{oj} = 0$
+
+$H_A$ *: Average tooth growth is significantly different for each supplement or * $\mu_{vc} - \mu_{oj} \neq 0$
+
+```{r}
+len_vc<- ToothGrowth[which(ToothGrowth$supp=="VC"),]$len
+len_oj<- ToothGrowth[which(ToothGrowth$supp=="OJ"),]$len
+
+t.test(len_oj, len_vc, alternative = c("two.sided"), 
+       conf.level = .95, paired=FALSE, var.equal = FALSE)
+```
+
+*p value* for the t-test is 0.06 and given a 5% significane level, we fail to reject the null hypothesis. Also,  $\mu_{oj} - \mu_{vc}$ being 0 is still a possibility given the 95% confidence interval.
+
+
+### Hypothesis Testing for Dosage
+
+
+#### Dosage level 0.5 vs 1.0
+
+$H_0$ *: Average tooth growth is not significantly different between dosage level 0.5 and 1.0 or * $\mu_{1.0} - \mu_{0.5} = 0$
+
+$H_A$ *: Average tooth growth is significantly different between dosage level 0.5 and 1.0 or * $\mu_{1.0} - \mu_{0.5} \neq 0$
+
+```{r}
+len_0.5<- ToothGrowth[which(ToothGrowth$dose==0.5),]$len
+len_1.0<- ToothGrowth[which(ToothGrowth$dose==1.0),]$len
+
+t.test(len_1.0, len_0.5, alternative = c("two.sided"), 
+       conf.level = .95, paired=FALSE, var.equal = FALSE)
+```
+
+*p value* for the t-test is 0 and so given a 5% significane level, we reject the null hypothesis. Also, based on the 95% confidence interval, we are very positive that $\mu_{1.0} - \mu_{0.5}$ is unlikely to be 0.
+
+
+#### Dosage level 1.0 vs 2.0
+
+$H_0$ *: Average tooth growth is not significantly different between dosage level 1.0 and 2.0 or * $\mu_{2.0} - \mu_{1.0} = 0$
+
+$H_A$ *: Average tooth growth is significantly different between dosage level 1.0 and 2.0 or * $\mu_{2.0} - \mu_{1.0} \neq 0$
+
+```{r}
+len_2.0<- ToothGrowth[which(ToothGrowth$dose==2.0),]$len
+len_1.0<- ToothGrowth[which(ToothGrowth$dose==1.0),]$len
+
+t.test(len_2.0, len_1.0, alternative = c("two.sided"), 
+       conf.level = .95, paired=FALSE, var.equal = FALSE)
+```
+
+*p value* for the t-test is 0 and so given a 5% significane level, we reject the null hypothesis. Also, based on the 95% confidence interval, we are very positive that $\mu_{2.0} - \mu_{1.0}$ is unlikely to be 0.
+
+
+## 4. Conclusions and Assumptions
+
+Based on the analysis and hypothesis testing, we can conclude that different level of dosage has significant effect to tooth growth while different supplements do not. Our conclusion is based on a number of assumptions:
+
+1. Samples taken reflects the actual population
+2. Sampling distribution of the mean follows the CLT and is nearly normal
+3. $\mu_{2.0} - \mu_{0.5}$ is definitely not equal 0 given $\mu_{2.0}$ is much greater than $\mu_{0.5}$
+
+## Appendix
+
+```{r, warning=FALSE,fig.align='center',fig.cap=" ",fig.height=3.5}
+library(ggplot2)
+library(reshape2)
+
+long <- melt(ToothGrowth, id.vars = c("len"))
+qplot(value, len, data = long) + facet_wrap(~ variable, scales = "free")+
+ggtitle("Tooth Growth vs Supp and Tooth Growth vs Dose")+
+xlab("")+ylab("Tooth Length")
+qplot(dose, len, data=ToothGrowth)+facet_wrap(~ supp)+
+ggtitle("Tooth Growth vs Dose by Supp")+
+xlab("Supplement")+ylab("Tooth Length")
+```
