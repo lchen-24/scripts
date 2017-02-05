@@ -1,34 +1,19 @@
-import xml.etree.ElementTree as ET
+import json
 
 fname = raw_input('Enter file name: ')
-if ( len(fname) < 1 ) : fname = 'Library.xml'
+if ( len(fname) < 1 ) : fname = 'roster_data.json'
 
-# <key>Track ID</key><integer>369</integer>
-# <key>Name</key><string>Another One Bites The Dust</string>
-# <key>Artist</key><string>Queen</string>
-def lookup(d, key):
-    found = False
-    for child in d:
-        if found : return child.text
-        if child.tag == 'key' and child.text == key :
-            found = True
-    return None
+# [
+#   [ "Charley", "si110", 1 ],
+#   [ "Mea", "si110", 0 ],
 
-stuff = ET.parse(fname)
-all = stuff.findall('dict/dict/dict')
-print 'Dict count:', len(all)
-for entry in all:
-    if ( lookup(entry, 'Track ID') is None ) : continue
+str_data = open(fname).read()
+json_data = json.loads(str_data)
 
-    name = lookup(entry, 'Name')
-    artist = lookup(entry, 'Artist')
-    album = lookup(entry, 'Album')
-    count = lookup(entry, 'Play Count')
-    rating = lookup(entry, 'Rating')
-    length = lookup(entry, 'Total Time')
-    genre = lookup(entry, 'Genre')
+for entry in json_data:
 
-    if name is None or artist is None or album is None : 
-        continue
+    name = entry[0];
+    title = entry[1];
+    role = entry[2];
 
-    print name, artist, album, count, rating, length, genre
+    print name, title, role
